@@ -1,1 +1,18 @@
 MAVRIC_CONFIG_FILE=config.yaml uv run --native-tls python run_email_analysis.py input/control_testing_email_001.json
+
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": user_message
+            }
+        ]
+    },
+    config={
+        "configurable": {
+            "thread_id": input_file.stem
+        }
+    }
+)
