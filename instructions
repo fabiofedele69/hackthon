@@ -1,0 +1,1 @@
+MAVRIC_CONFIG_FILE=config.yaml uv run --native-tls python run_email_analysis.py input/control_testing_email_001.json
