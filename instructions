@@ -1,6 +1,7 @@
 MAVRIC_CONFIG_FILE=config.yaml uv run --native-tls python run_email_analysis.py input/control_testing_email_001.json
 MAVRIC_CONFIG_FILE=config.yaml uv run --native-tls python run_rfi_clarification.py output/control_testing_email_001_analysis.md
 MAVRIC_CONFIG_FILE=config.yaml uv run --native-tls python run_gap_analysis.py output/control_testing_email_001_analysis.md
+MAVRIC_CONFIG_FILE=config.yaml uv run --native-tls python run_rfi_decision.py output/control_testing_email_001_analysis_gap_analysis.md
 
 result = agent.invoke(
     {
