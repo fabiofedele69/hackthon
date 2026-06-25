@@ -1,0 +1,24 @@
+1. Read input/control_testing_email_001.json
+
+2. Convert JSON into a user message:
+   “Analyze this control testing email JSON…”
+
+3. Invoke the MAVRIC agent:
+   agent.invoke(...)
+
+4. MAVRIC uses:
+   - config.yaml
+   - system_prompt.md
+   - Azure/OpenAI endpoint
+   - LangGraph/ReAct loop
+
+5. OpenAI LLM returns the analysis:
+   - summary
+   - known facts
+   - missing information
+   - missing evidence
+   - clarification questions
+   - recommended next action
+
+6. Runner saves output to:
+   output/control_testing_email_001_analysis.md
