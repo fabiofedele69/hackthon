@@ -1,0 +1,184 @@
+# End-to-End RFI Agent Workflow
+
+## Overview
+
+The objective of the RFI Agent is to assist Operational Risk Control Testing by analyzing structured control testing requests, identifying missing information, reasoning over potential gaps, and preparing a human-reviewable Request For Information (RFI).
+
+The implementation follows a modular AI pipeline where each component has a single responsibility. This architecture promotes explainability, maintainability, and extensibility, allowing each phase to evolve independently while preserving the overall workflow.
+
+Unlike a monolithic AI assistant, the solution decomposes the RFI lifecycle into specialized reasoning components.
+
+---
+
+# End-to-End Architecture
+
+```text
+                    Control Testing
+                     JSON Document
+                            │
+                            ▼
+                 Phase 1 - Email Analysis
+                (run_email_analysis.py)
+                            │
+                            ▼
+             Structured Control Assessment
+                            │
+                            ▼
+              Phase 2 - Clarification Agent
+            (run_rfi_clarification.py)
+                            │
+                            ▼
+              Clarification Package
+                            │
+                            ▼
+                Phase 3 - Gap Analysis
+               (run_gap_analysis.py)
+                            │
+                            ▼
+              Structured Gap Assessment
+                            │
+                            ▼
+              Phase 4 - Decision Engine
+              (run_rfi_decision.py)
+                            │
+                            ▼
+               RFI Decision & Priority
+                            │
+                            ▼
+            Phase 5 - Draft RFI Generator
+         (run_rfi_draft_generator.py)
+                            │
+                            ▼
+             Human Review and Approval
+                            │
+                            ▼
+                    Final RFI Process
+```
+
+---
+
+# Phase 1 – Control Testing Analysis
+
+**Input**
+
+Structured JSON describing a Control Testing request.
+
+**Objective**
+
+The agent analyses the control testing request and extracts:
+
+- Business summary
+- Known facts
+- Missing information
+- Missing evidence
+- Initial clarification questions
+- Recommended next action
+
+The output becomes the knowledge base for the subsequent phases.
+
+---
+
+# Phase 2 – Clarification Agent
+
+The Clarification Agent reviews the complete analysis generated during Phase 1.
+
+Its objective is to identify the questions that should be addressed before an RFI can be prepared.
+
+The agent produces:
+
+- clarification questions
+- recommended next action
+- audit notes
+- human review checklist
+
+This phase focuses on improving the quality of the information before additional reasoning takes place.
+
+---
+
+# Phase 3 – Gap Analysis
+
+The Gap Analysis Agent performs a Compliance-oriented reasoning process.
+
+Instead of summarizing information, it determines whether sufficient information exists to continue the Control Testing process.
+
+Typical gaps include:
+
+- missing control metadata
+- missing ownership information
+- missing evidence
+- missing documentation
+- ambiguous control execution
+- missing approvals
+- missing review period
+
+The output is a structured gap assessment.
+
+---
+
+# Phase 4 – RFI Decision Engine
+
+The Decision Engine evaluates the Gap Analysis and determines whether an RFI should be initiated.
+
+Possible decisions include:
+
+- OPEN_RFI
+- REQUEST_CLARIFICATION
+- HUMAN_REVIEW_REQUIRED
+- NO_RFI_REQUIRED
+
+The agent also recommends the priority of the request and provides the rationale supporting its decision.
+
+---
+
+# Phase 5 – Draft RFI Generator
+
+When the Decision Engine recommends opening an RFI, the Draft Generator prepares a human-reviewable RFI.
+
+The generated draft includes:
+
+- subject
+- business context
+- requested information
+- requested evidence
+- clarification questions
+- review checklist
+- audit notes
+
+The generated RFI is **never automatically sent**.
+
+A Human-In-The-Loop review is always required before distribution.
+
+---
+
+# Human-In-The-Loop
+
+The proposed architecture intentionally keeps a Human-In-The-Loop approach.
+
+The AI Agent assists Operational Risk investigators by:
+
+- reducing manual analysis,
+- identifying missing information,
+- proposing clarification questions,
+- drafting RFIs,
+- documenting the reasoning process.
+
+The final business decision remains under human responsibility.
+
+---
+
+# Architectural Benefits
+
+The proposed architecture follows a modular AI design where each component performs a single reasoning task.
+
+This approach provides several advantages:
+
+- clear separation of responsibilities
+- explainable reasoning process
+- reusable AI components
+- easier testing and evaluation
+- simpler maintenance
+- independent evolution of each phase
+- compatibility with LangGraph workflows
+- straightforward integration with enterprise systems
+
+The modular design also allows additional phases to be introduced in the future, such as automatic owner identification, evidence validation, SLA monitoring, escalation management, and integration with enterprise Operational Risk platforms.
